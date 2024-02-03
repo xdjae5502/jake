@@ -1,0 +1,65 @@
+{% extends 'pages/Index.html' %}
+{% load static %}
+
+{% block content %}
+<p>Total Batteries: {{ batteries|length }}</p>
+<a href="{% url 'add_battery' %}" class="btn btn-outline-primary" data-toggle="modal" data-target="#addBatteryModal">
+      Add New Battery
+    </a>
+
+    <div class="row">
+        {% for battery in batteries %}
+            <div class="col-lg-4">
+                {% if battery.image %}
+                    <img class="thumbnail" src="{{ battery.image.url }}" alt="{{ battery.name }}">
+                {% else %}
+                    <img class="thumbnail" alt="{{ battery.name }}">
+                {% endif %}
+                <div class="box-element product">
+                    <h6><strong>{{ battery.name }}</strong></h6>
+                    <hr>
+                    <form method="post" action="#">
+                        {% csrf_token %}
+                        <input type="hidden" name="battery_id" value="{{ battery.id }}">
+                       
+                        <a href="{% url 'edit_battery' battery.id %}" class="btn btn-outline-secondary add-btn">Edit</a>
+                    </form>
+                    <!-- Change the View button to Delete -->
+                    <a class="btn btn-outline-dark" href="{% url 'delete_battery' battery.id %}">Delete</a>
+                    <h4 style="display: inline-block; float: right;"><strong>₱{{ battery.price|floatformat:2 }}</strong></h4>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    
+
+
+   
+
+
+    <div class="modal fade" id="addBatteryModal" tabindex="-1" role="dialog" aria-labelledby="addBatteryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBatteryModalLabel">Add New Battery</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form to Add a New Battery -->
+                    <form method="post" action="{% url 'add_battery' %}">
+                        {% csrf_token %}
+                        <!-- Add your form fields for adding a new battery here -->
+                        <!-- For example: -->
+                        <!-- <label for="new_battery_name">Battery Name:</label> -->
+                        <!-- <input type="text" name="new_battery_name" id="new_battery_name" required> -->
+                        <!-- ... (add other fields as needed) -->
+                        <button type="submit" class="btn btn-outline-secondary">Add Battery</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

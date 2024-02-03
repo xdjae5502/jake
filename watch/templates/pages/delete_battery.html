@@ -1,0 +1,11 @@
+{% extends 'pages/Index.html' %}
+
+{% block content %}
+  <h2>Delete Battery</h2>
+  <p>Are you sure you want to delete "{{ battery.name }}"?</p>
+  <form method="post" action="{% url 'delete_battery' battery.id %}">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+  </form>
+ 
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'pages/Index.html' %}
+{% load static %}
+
+{% block content %}  
+<p>Total Products: {{ products|length }}</p>
+    <a href="{% url 'add_product' %}" class="btn btn-outline-primary" data-toggle="modal" data-target="#addProductModal">
+        Add New Product
+    </a>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-lg-4">
+                {% if product.image %}
+                    <img class="thumbnail" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img class="thumbnail" alt="{{ product.name }}">
+                {% endif %}
+                <div class="box-element product">
+                    <h6><strong>{{ product.name }}</strong></h6>
+                    <hr>
+                    
+                    <a class="btn btn-outline-dark" href="{% url 'edit_product' product.id %}">Edit</a>
+                    <a class="btn btn-outline-danger" href="{% url 'delete_product' product.id %}">Delete</a>
+                    <h4 style="display: inline-block; float: right;"><strong>₱{{ product.price|floatformat:2 }}</strong></h4>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+  
+
+  
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+                    <form method="post" action="{% url 'add_product' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-secondary">Add Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

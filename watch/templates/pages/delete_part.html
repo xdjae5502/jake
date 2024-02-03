@@ -1,0 +1,18 @@
+<!-- watch/templates/pages/delete_part.html -->
+{% extends 'pages/Index.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Delete Watch Part</h2>
+                <p>Are you sure you want to delete the Watch Part "{{ part.name }}"?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    <a href="{% url 'watch_parts' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

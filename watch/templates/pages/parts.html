@@ -1,0 +1,52 @@
+{% extends 'pages/Index.html' %}
+{% load static %}
+
+{% block content %}  
+<p>Total Parts: {{ parts_data|length }}</p>
+    <a href="{% url 'add_parts' %}" class="btn btn-outline-primary" data-toggle="modal" data-target="#addPartModal">
+        Add New Part
+    </a>
+    <div class="row">
+        {% for part in parts_data %}
+            <div class="col-lg-4">
+                {% if part.image %}
+                    <img class="thumbnail" src="{{ part.image.url }}" alt="{{ part.name }}">
+                {% else %}
+                    <img class="thumbnail" alt="{{ part.name }}">
+                {% endif %}
+                <div class="box-element product">
+                    <h6><strong>{{ part.name }}</strong></h6>
+                    <hr>
+                    <p class="mb-2">{{ part.description }}</p>
+                    <hr>
+                    <a class="btn btn-outline-dark" href="{% url 'edit_part' part.id %}">Edit</a>
+                    <a class="btn btn-outline-danger" href="{% url 'delete_part' part.id %}">Delete</a>
+                    <h4 style="display: inline-block; float: right;"><strong>₱{{ part.price|floatformat:2 }}</strong></h4>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    
+
+    
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add New Part</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form to Add a New Product -->
+                    <form method="post" action="{% url 'add_parts' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-secondary">Add Part</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
